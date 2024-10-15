@@ -3,71 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECG A.I. Demo UI/UX Application</title>
+    <title>ECG A.I. Demo - Delete Your Account</title>
     <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: white;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1A5F7A, #159895);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
         }
 
         .container {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 400px;
+            animation: fadeIn 0.5s ease-out;
         }
 
-        .main-heading {
-            text-align: center;
-            color: #2c3e50;
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 0.5rem;
+        .logo {
+            width: 120px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+            animation: pulse 2s infinite;
         }
 
-        h2 {
+        h1, h2 {
+            color: white;
             text-align: center;
-            color: #333;
-            font-size: 1.5rem;
             margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         .warning {
-            background-color: #fff3cd;
+            background-color: rgba(255, 243, 205, 0.2);
             border: 1px solid #ffeeba;
-            color: #856404;
+            color: #ffd700;
             padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
             text-align: center;
             font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .warning:hover {
+            background-color: rgba(255, 243, 205, 0.3);
+            transform: scale(1.02);
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #555;
+            font-weight: bold;
         }
 
         input {
             width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 0.75rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
             font-size: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+            outline: none;
         }
 
         button {
@@ -76,42 +104,65 @@
             background-color: #dc3545;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            transition: background-color 0.3s ease;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
         }
 
         button:hover {
             background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
         }
 
         .message {
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             text-align: center;
             font-weight: bold;
-            padding: 0.5rem;
-            border-radius: 4px;
+            padding: 1rem;
+            border-radius: 8px;
+            opacity: 0;
+            transition: all 0.5s ease;
         }
 
         .error {
-            color: #dc3545;
-            background-color: #f8d7da;
+            background-color: rgba(239, 35, 35, 0.6);
+            color: #eeaeae;
+            border-radius: 8px;
         }
 
         .success {
-            color: #28a745;
-            background-color: #d4edda;
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #51cf66;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="main-heading">ECG A.I. Demo UI/UX Application</h1>
+        <img src="https://your-app-logo-url.com/logo.png" alt="ECG AI Demo Logo" class="logo">
+        <h1>ECG A.I. Demo UI/UX Application</h1>
         <h2>Delete Your Account</h2>
         <div class="warning">
             Warning: Deleting your account will permanently remove all your data, including personal information. This action cannot be undone.
         </div>
+        <div id="message" class="message"></div>
         <form id="deleteForm">
             <div class="form-group">
                 <label for="email">Email:</label>
@@ -122,14 +173,26 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit">Delete Account</button>
+            <br>
+            <br>
         </form>
-        <div id="message" class="message"></div>
+        
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('deleteForm');
             const messageDiv = document.getElementById('message');
+            const inputs = document.querySelectorAll('input');
+
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.style.transform = 'translateY(-5px)';
+                });
+                input.addEventListener('blur', () => {
+                    input.parentElement.style.transform = 'translateY(0)';
+                });
+            });
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -148,20 +211,28 @@
 
                     const data = await response.json();
 
-                    if (response.ok) {
-                        messageDiv.textContent = 'Account successfully deleted.';
-                        messageDiv.className = 'message success';
-                        form.reset();
-                    } else {
-                        messageDiv.textContent = data.error || 'An error occurred. Please try again.';
-                        messageDiv.className = 'message error';
-                    }
+                    messageDiv.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        if (response.ok) {
+                            messageDiv.textContent = 'Account successfully deleted.';
+                            messageDiv.className = 'message success';
+                            form.reset();
+                        } else {
+                            messageDiv.textContent = data.error || 'An error occurred. Please try again.';
+                            messageDiv.className = 'message error';
+                        }
+                        messageDiv.style.opacity = '1';
+                    }, 300);
+
                 } catch (error) {
                     messageDiv.textContent = 'An error occurred. Please try again.';
                     messageDiv.className = 'message error';
+                    messageDiv.style.opacity = '1';
                 }
             });
         });
     </script>
 </body>
+</html>
 </html>
